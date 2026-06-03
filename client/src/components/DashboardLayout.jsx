@@ -34,7 +34,7 @@ export default function DashboardLayout({
         onClick={() => onSelectView(item.id)}
         className={`w-full rounded-lg px-4 py-3 text-left text-sm font-semibold transition ${
           isActive
-            ? "bg-blue-600 text-white shadow-md"
+            ? "bg-blue-600 text-white"
             : "text-slate-600 hover:bg-blue-50 hover:text-blue-600"
         }`}
       >
@@ -45,7 +45,7 @@ export default function DashboardLayout({
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <header className="sticky top-0 z-20 flex items-center justify-between border-b border-slate-200 bg-white px-4 py-4 shadow-sm md:hidden">
+      <header className="sticky top-0 z-20 flex items-center justify-between border-b border-slate-200 bg-white px-4 py-4 md:hidden">
         <button
           type="button"
           onClick={onToggleMobile}
@@ -66,7 +66,7 @@ export default function DashboardLayout({
       ) : null}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-30 flex w-56 flex-col bg-white p-6 shadow-sm transition-transform md:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-30 flex w-56 flex-col border-r border-slate-200 bg-white p-6 transition-transform md:translate-x-0 ${
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -100,7 +100,7 @@ export default function DashboardLayout({
 
       <main className="px-4 py-6 md:ml-56 md:px-8 md:py-8">
         <div className="mx-auto max-w-5xl">
-          <div className="bg-white rounded-xl p-6 shadow">{children}</div>
+          <div className="rounded-lg border border-slate-200 bg-white p-6">{children}</div>
         </div>
       </main>
     </div>

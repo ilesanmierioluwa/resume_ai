@@ -47,5 +47,27 @@ router.get('/:id', requireAuth, async (req, res) => {
   }
 });
 
-export default router;
+/**
+ * Deletes one analysis and all chat messages linked to it for the authenticated user.
+ *
+ * @param {import('express').Request} req - Request containing the analysis id route parameter.
+ * @param {import('express').Response} res - Response confirming deletion.
+ * @returns {Promise<void>} Resolves after the analysis and messages are deleted.
+ */
+router.delete('/:id', requireAuth, async (req, res) => {
+  try {
+    const analysis = await Analysis.findOneAndDelete({ _id: req.params.id, userId: req.user.id });
 
+    if (!analysis) {
+      res.status(404).json({ message: 'Analysis not found.' });
+      return;
+    }
+
+    await ChatMessage.deleteMany({ analysisId: analysis._id, userId: req.user.id });
+    res.json({ message: 'Analysis deleted successfully.' });
+  } catch (error) {
+    res.status(500).json({ message: 'Unable to delete analysis.', error: error.message });
+  }
+});
+
+export default router;

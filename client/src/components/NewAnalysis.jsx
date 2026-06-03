@@ -23,6 +23,9 @@ export default function NewAnalysis({ loadedAnalysis, loadedMessages = [] }) {
   useEffect(() => {
     setAnalysis(loadedAnalysis || null);
     setMessages(loadedMessages);
+    if (loadedAnalysis?._id) {
+      localStorage.setItem('resumeai_active_analysis_id', loadedAnalysis._id);
+    }
   }, [loadedAnalysis, loadedMessages]);
 
   /**
@@ -98,6 +101,7 @@ export default function NewAnalysis({ loadedAnalysis, loadedMessages = [] }) {
       });
       setAnalysis(data.analysis);
       setMessages([]);
+      localStorage.setItem('resumeai_active_analysis_id', data.analysis._id);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -112,7 +116,7 @@ export default function NewAnalysis({ loadedAnalysis, loadedMessages = [] }) {
         <p className="mt-2 text-slate-600">Upload a text-based PDF resume and receive AI-powered feedback.</p>
       </div>
 
-      <form onSubmit={handleSubmit} className="mt-6 rounded-xl bg-white p-5 shadow-md">
+      <form onSubmit={handleSubmit} className="mt-6 rounded-lg border border-slate-200 bg-white p-5">
         <AlertBanner message={error} onClose={() => setError('')} />
         <div
           role="button"
@@ -121,7 +125,7 @@ export default function NewAnalysis({ loadedAnalysis, loadedMessages = [] }) {
           onKeyDown={(event) => event.key === 'Enter' && fileInputRef.current?.click()}
           onDragOver={handleDragOver}
           onDrop={handleDrop}
-          className="flex min-h-48 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-blue-200 bg-blue-50 px-4 py-8 text-center transition hover:border-blue-600"
+          className="flex min-h-48 cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-blue-200 bg-slate-50 px-4 py-8 text-center transition hover:border-blue-600 hover:bg-blue-50"
         >
           <input
             ref={fileInputRef}
@@ -132,7 +136,7 @@ export default function NewAnalysis({ loadedAnalysis, loadedMessages = [] }) {
           />
           <p className="text-lg font-bold text-blue-600">Drop your PDF resume here</p>
           <p className="mt-2 text-sm text-slate-600">or tap to browse. Maximum file size is 5MB.</p>
-          {selectedFile ? <p className="mt-4 rounded-lg bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm">{selectedFile.name}</p> : null}
+          {selectedFile ? <p className="mt-4 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700">{selectedFile.name}</p> : null}
         </div>
 
         <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -140,7 +144,7 @@ export default function NewAnalysis({ loadedAnalysis, loadedMessages = [] }) {
           <button
             type="submit"
             disabled={loading}
-            className="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white shadow-md hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
+            className="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
           >
             {loading ? 'Analyzing...' : 'Analyze Resume'}
           </button>

@@ -2,11 +2,6 @@
 
 ResumeAI is an AI-powered resume analyzer and career advice web application built as a final year HND Computer Science project for the Software and Web Development option. The system allows users to register, log in, upload a PDF resume, receive AI-generated resume feedback, view career role recommendations, and continue a resume-aware chat conversation.
 
-## Project Details
-
-Author: Akpovogbeta Ogheneruona Victory  
-Matriculation Number: DSPT/HND/COM/2425/24167  
-Supervisor: Mrs. L.M. Okoh
 
 ## Tech Stack
 

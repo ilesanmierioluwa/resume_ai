@@ -24,7 +24,7 @@ export default function AuthForm({
 }) {
   return (
     <main className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-10">
-      <section className="w-full max-w-md rounded-xl bg-white p-8 shadow-md">
+      <section className="w-full max-w-md rounded-lg border border-slate-200 bg-white p-8">
         <Link to="/" className="text-xl font-extrabold text-blue-600">
           ResumeAI
         </Link>
@@ -49,7 +49,7 @@ export default function AuthForm({
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white shadow-md transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
+            className="w-full rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
           >
             {loading ? 'Please wait...' : submitLabel}
           </button>
@@ -65,4 +65,3 @@ export default function AuthForm({
     </main>
   );
 }
-

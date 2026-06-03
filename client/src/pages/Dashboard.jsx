@@ -17,8 +17,16 @@ export default function Dashboard() {
   const [analyses, setAnalyses] = useState([]);
   const [historyLoading, setHistoryLoading] = useState(false);
   const [historyError, setHistoryError] = useState('');
+  const [deletingId, setDeletingId] = useState('');
   const [loadedAnalysis, setLoadedAnalysis] = useState(null);
   const [loadedMessages, setLoadedMessages] = useState([]);
+
+  useEffect(() => {
+    const activeAnalysisId = localStorage.getItem('resumeai_active_analysis_id');
+    if (activeAnalysisId) {
+      viewAnalysis(activeAnalysisId, { silent: true });
+    }
+  }, []);
 
   /**
    * Loads the user's analysis history from the backend.
@@ -51,8 +59,10 @@ export default function Dashboard() {
    * @param {string} id - Analysis document id.
    * @returns {Promise<void>} Resolves after analysis details are fetched.
    */
-  async function viewAnalysis(id) {
-    setHistoryError('');
+  async function viewAnalysis(id, options = {}) {
+    if (!options.silent) {
+      setHistoryError('');
+    }
 
     try {
       const data = await apiRequest(`/api/history/${id}`);
@@ -60,8 +70,44 @@ export default function Dashboard() {
       setLoadedMessages(data.messages || []);
       setActiveView('new');
       setMobileOpen(false);
+      localStorage.setItem('resumeai_active_analysis_id', id);
+    } catch (err) {
+      if (!options.silent) {
+        setHistoryError(err.message);
+      }
+      localStorage.removeItem('resumeai_active_analysis_id');
+    }
+  }
+
+  /**
+   * Confirms and deletes one saved analysis from the user's history.
+   *
+   * @param {object} analysis - Analysis summary selected for deletion.
+   * @returns {Promise<void>} Resolves after deletion succeeds or fails.
+   */
+  async function deleteAnalysis(analysis) {
+    const confirmed = window.confirm(`Delete "${analysis.resumeFileName}" and its chat history? This cannot be undone.`);
+
+    if (!confirmed) {
+      return;
+    }
+
+    setDeletingId(analysis._id);
+    setHistoryError('');
+
+    try {
+      await apiRequest(`/api/history/${analysis._id}`, { method: 'DELETE' });
+      setAnalyses((current) => current.filter((item) => item._id !== analysis._id));
+
+      if (loadedAnalysis?._id === analysis._id || localStorage.getItem('resumeai_active_analysis_id') === analysis._id) {
+        setLoadedAnalysis(null);
+        setLoadedMessages([]);
+        localStorage.removeItem('resumeai_active_analysis_id');
+      }
     } catch (err) {
       setHistoryError(err.message);
+    } finally {
+      setDeletingId('');
     }
   }
 
@@ -77,6 +123,7 @@ export default function Dashboard() {
     if (view === 'new') {
       setLoadedAnalysis(null);
       setLoadedMessages([]);
+      localStorage.removeItem('resumeai_active_analysis_id');
     }
   }
 
@@ -104,7 +151,9 @@ export default function Dashboard() {
           analyses={analyses}
           loading={historyLoading}
           error={historyError}
+          deletingId={deletingId}
           onView={viewAnalysis}
+          onDelete={deleteAnalysis}
           onDismissError={() => setHistoryError('')}
         />
       ) : (
@@ -113,4 +162,3 @@ export default function Dashboard() {
     </DashboardLayout>
   );
 }
-

@@ -20,7 +20,7 @@ export default function AnalysisResults({ analysis }) {
       <h2 className="text-2xl font-bold text-blue-600">Analysis Result</h2>
       <div className="mt-4 grid gap-4">
         {paragraphCards.map((card) => (
-          <article key={card.title} className="rounded-xl border-l-4 border-blue-600 bg-blue-50 p-5 shadow-md">
+          <article key={card.title} className="rounded-lg border border-blue-100 border-l-4 border-l-blue-600 bg-blue-50 p-5">
             <h3 className="font-bold text-slate-900">{card.title}</h3>
             <p className="mt-2 leading-7 text-slate-700">{card.content}</p>
           </article>
@@ -28,7 +28,7 @@ export default function AnalysisResults({ analysis }) {
       </div>
 
       <div className="mt-4 grid gap-4 lg:grid-cols-2">
-        <article className="rounded-xl bg-white p-5 shadow-md">
+        <article className="rounded-lg border border-red-100 bg-white p-5">
           <h3 className="font-bold text-red-500">Weaknesses Identified</h3>
           <ul className="mt-3 list-disc space-y-2 pl-5 text-slate-700">
             {(analysis.weaknesses || []).map((item, index) => (
@@ -36,7 +36,7 @@ export default function AnalysisResults({ analysis }) {
             ))}
           </ul>
         </article>
-        <article className="rounded-xl bg-white p-5 shadow-md">
+        <article className="rounded-lg border border-emerald-100 bg-white p-5">
           <h3 className="font-bold text-emerald-600">Suggested Improvements</h3>
           <ul className="mt-3 list-disc space-y-2 pl-5 text-slate-700">
             {(analysis.improvements || []).map((item, index) => (
@@ -48,4 +48,3 @@ export default function AnalysisResults({ analysis }) {
     </section>
   );
 }
-
