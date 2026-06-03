@@ -36,6 +36,8 @@ export function clearSession() {
  * @param {object} options - Fetch options.
  * @returns {Promise<object>} Parsed response JSON.
  */
+const BASE_URL = import.meta.env.VITE_API_URL || "";
+
 export async function apiRequest(path, options = {}) {
   const headers = { ...(options.headers || {}) };
   const token = getToken();
@@ -48,7 +50,7 @@ export async function apiRequest(path, options = {}) {
     headers["Content-Type"] = "application/json";
   }
 
-  const response = await fetch(path, { ...options, headers });
+  const response = await fetch(`${BASE_URL}${path}`, { ...options, headers });
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {
