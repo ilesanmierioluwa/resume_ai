@@ -4,7 +4,7 @@
  * @returns {string|null} Saved token or null.
  */
 export function getToken() {
-  return localStorage.getItem('resumeai_token');
+  return localStorage.getItem("resumeai_token");
 }
 
 /**
@@ -15,8 +15,8 @@ export function getToken() {
  * @returns {void}
  */
 export function saveSession(token, name) {
-  localStorage.setItem('resumeai_token', token);
-  localStorage.setItem('resumeai_name', name);
+  localStorage.setItem("resumeai_token", token);
+  localStorage.setItem("resumeai_name", name);
 }
 
 /**
@@ -25,8 +25,8 @@ export function saveSession(token, name) {
  * @returns {void}
  */
 export function clearSession() {
-  localStorage.removeItem('resumeai_token');
-  localStorage.removeItem('resumeai_name');
+  localStorage.removeItem("resumeai_token");
+  localStorage.removeItem("resumeai_name");
 }
 
 /**
@@ -45,16 +45,15 @@ export async function apiRequest(path, options = {}) {
   }
 
   if (options.body && !(options.body instanceof FormData)) {
-    headers['Content-Type'] = 'application/json';
+    headers["Content-Type"] = "application/json";
   }
 
   const response = await fetch(path, { ...options, headers });
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {
-    throw new Error(data.message || 'Request failed. Please try again.');
+    throw new Error(data.message || "Request failed. Please try again.");
   }
 
   return data;
 }
-
